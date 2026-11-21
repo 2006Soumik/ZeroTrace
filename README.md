@@ -1,80 +1,118 @@
 ﻿# ZeroTrace
 
-**Automated C/C++ Vulnerability Research and Fuzzing Framework**
+**An Automated Software Vulnerability Research and Fuzzing Framework**
 
-ZeroTrace is a Python-based security research framework that integrates with a Kali Linux worker to run AFL++ fuzzing experiments on native C/C++ targets. It collects and analyzes crash evidence and provides a local web dashboard for monitoring research results.
+ZeroTrace is a Python-based cybersecurity research framework designed to automate software vulnerability research through fuzzing, crash analysis, and security reporting.
+
+It integrates a Windows-based Python application with a Kali Linux worker to execute fuzzing experiments using AFL++ and analyze crashes using AddressSanitizer (ASAN).
 
 ## Features
 
-- Target validation
-- Remote Kali Linux integration over SSH
-- AFL++ fuzzing experiment management
-- Crash collection and analysis
-- AddressSanitizer-based crash investigation
-- Crash deduplication and prioritization
-- Static and basic data-flow analysis
-- Vulnerability classification and correlation
-- CVSS assessment
-- Root-cause and exploitability assessment
-- Corpus and experiment management
-- Patch validation and regression testing
-- Evidence export and research report generation
-- Local read-only Flask dashboard
+- **Target Management:** Manage and validate C/C++ fuzzing targets.
+- **Automated Fuzzing:** Execute AFL++ fuzzing experiments through Kali Linux.
+- **Remote Integration:** Connect Windows and Kali Linux using SSH/SFTP.
+- **Crash Detection:** Collect and organize crashes generated during fuzzing.
+- **Crash Analysis:** Replay crashes using AddressSanitizer.
+- **Crash Deduplication:** Identify and group duplicate crash results.
+- **Vulnerability Assessment:** Apply heuristic-based severity and exploitability analysis.
+- **Static Analysis:** Perform basic source-code security analysis.
+- **Security Reports:** Generate structured vulnerability research reports.
+- **CVSS Calculator:** Estimate vulnerability severity using CVSS.
+- **Patch Validation:** Support regression testing after code changes.
+- **Web Dashboard:** Monitor experiments and view security analytics locally.
 
 ## Architecture
 
-- **Python application:** Main command-line interface and research workflow.
-- **Kali Linux worker:** Executes AFL++ fuzzing experiments.
-- **Analysis modules:** Process crash data and generate research findings.
-- **Flask dashboard:** Displays experiment information and analysis results.
+```text
+Windows Application
+       |
+       v
+ZeroTrace Python Framework
+       |
+       v
+SSH / SFTP Connection
+       |
+       v
+Kali Linux Worker
+       |
+       v
+AFL++ Fuzzing Engine
+       |
+       v
+Crash Collection
+       |
+       v
+ASAN Crash Analysis
+       |
+       v
+Reports and Dashboard
+```
+
+## Technologies Used
+
+- Python
+- Flask
+- Kali Linux
+- AFL++
+- AddressSanitizer (ASAN)
+- C/C++
+- SSH / SFTP
+- Paramiko
+- HTML / CSS / JavaScript
 
 ## Requirements
 
-- Windows or another supported Python environment
-- Python 3.14 (tested in the development environment)
-- Kali Linux
+- Windows 10/11 or compatible system
+- Python 3.14 (tested)
+- Kali Linux environment
+- SSH access to the Kali Linux worker
 - AFL++ installed on Kali Linux
-- SSH access from the Windows machine to Kali Linux
-- Compatible C/C++ target and fuzzing harness
+- GCC or Clang compiler
+- A compatible C/C++ fuzzing target
 
 ## Installation
 
-Clone the repository:
+### 1. Clone the repository
 
 ```bash
 git clone https://github.com/2006Soumik/ZeroTrace.git
+```
+
+### 2. Open the project directory
+
+```bash
 cd ZeroTrace
 ```
 
-Install Python dependencies:
+### 3. Install dependencies
 
 ```bash
 py -m pip install -r requirements.txt
 ```
 
-Create your local configuration:
+### 4. Configure the application
+
+Copy the example configuration:
 
 ```powershell
 Copy-Item .\config\config.example.json .\config\config.json
 ```
 
-Edit `config/config.json` with your own Kali Linux IP address, username, and workspace paths.
+Edit `config/config.json` with your Kali Linux connection details and local configuration.
 
-Make sure SSH host verification is configured and your Kali Linux SSH host key is trusted.
+Never upload passwords, private keys, or other credentials to GitHub.
 
-## Usage
-
-Start the main application:
+### 5. Run ZeroTrace
 
 ```powershell
 py app.py
 ```
 
-Start the dashboard separately:
+Follow the application menu to configure a target and run an experiment.
 
-```powershell
-py dashboard\app.py
-```
+## Dashboard
+
+ZeroTrace includes a local Flask-based web dashboard for monitoring experiments, viewing crash information, and reviewing security analytics.
 
 Open the dashboard in your browser:
 
@@ -82,42 +120,48 @@ Open the dashboard in your browser:
 http://127.0.0.1:5000
 ```
 
-The dashboard is designed for local, read-only monitoring.
+The dashboard is intended for local monitoring and reporting.
 
-## Demonstrated Test
+## Demonstration
 
-The development workflow was demonstrated using a sample C program and AFL++ on Kali Linux.
+ZeroTrace has been tested using a sample C program designed for controlled fuzzing experiments.
 
-The test demonstrated:
+A demonstrated 30-second experiment produced:
 
-- A completed 30-second fuzzing experiment
-- Crash collection
-- AddressSanitizer confirmation of a stack-based buffer overflow
-- Static and data-flow analysis
-- Vulnerability classification
-- Evidence correlation and research reporting
-- Experiment integrity verification
+- 20,765 fuzzing executions
+- 1 detected crash
+- AddressSanitizer confirmation of a stack-buffer-overflow
+- 22.22% bitmap coverage
+- 100% reported execution stability
+
+These results demonstrate the framework's workflow against a test target. They do not establish that ZeroTrace can discover zero-day vulnerabilities in arbitrary software.
 
 ## Scope and Limitations
 
-ZeroTrace is a research framework, not a universal application scanner.
-
-It currently focuses on native C/C++ targets that have compatible fuzzing harnesses and instrumented builds. Testing complex software such as FFmpeg, SQLite, or image-processing libraries requires target-specific setup.
-
-A detected crash does not automatically prove a remotely exploitable vulnerability or a zero-day. Analysis scores and classifications are research aids, not guarantees.
-
-Web application penetration testing and Android APK testing are not currently supported as direct target types.
+- Currently focused on native C/C++ fuzzing targets.
+- Requires a compatible fuzzing harness and instrumented build.
+- Uses Kali Linux and AFL++ for fuzzing.
+- Vulnerability classification and exploitability assessments are heuristic-based.
+- Results require manual security validation.
+- It does not directly scan arbitrary websites, Android applications, or installed software.
+- It is a research and learning project, not a replacement for professional security testing tools.
 
 ## Safety
 
-Only test software that you own or have explicit permission to assess. Use isolated test environments and non-production targets.
+Use ZeroTrace only on software you own or have explicit permission to test.
+
+Use isolated environments and controlled test targets when conducting fuzzing experiments.
 
 ## Project Status
 
-Core framework and a sample end-to-end fuzzing workflow have been implemented. Further compatibility testing, documentation, and validation are ongoing.
+**Status:** Active Development
+
+ZeroTrace is an ongoing cybersecurity research and portfolio project. Features and testing coverage may change as development continues.
 
 ## Author
 
-Soumik Sarkar
+**Soumik Sarkar**
 
-GitHub: https://github.com/2006Soumik
+- GitHub: https://github.com/2006Soumik
+- Project: https://github.com/2006Soumik/ZeroTrace
+- Research: https://github.com/2006Soumik/zero-day-research-paper
