@@ -1,0 +1,8 @@
+﻿{
+    "kali": {
+        "host": "YOUR_KALI_IP",
+        "username": "YOUR_KALI_USERNAME",
+        "workspace": "/home/YOUR_USERNAME/zerotrace_worker",
+        "fuzzer_stats": "/home/YOUR_USERNAME/zerotrace_worker/lab/findings/default/fuzzer_stats"
+    }
+}
